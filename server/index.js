@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
+import { authRouter } from './routes/Authroutes.js'
 
 dotenv.config()
 
@@ -17,8 +18,14 @@ app.use(cors({
     credentials: true,
 }));
 
-app.use(cookieParser());
+// Middleware to parse URL-encoded data
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
+
+
+// api endpoints
+app.use('/api/auth', authRouter)
 
 app.get('/', (req,res)=>{
     res.send('hello sachin') 
