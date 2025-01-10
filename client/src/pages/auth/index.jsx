@@ -8,8 +8,10 @@ import { LOGIN_ROUTE, SIGNUP_ROUTE } from '../../../utils/constants';
 import { toast } from 'sonner';
 import { apiClient } from '../../lib/api-client';
 import { useNavigate } from 'react-router-dom';
+import { useAppStore } from '../../store';
 
 const Auth = () => {
+  const {setUserInfo} = useAppStore()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -60,6 +62,7 @@ const Auth = () => {
         }, {withCredentials: true});
         if(response.data.success){
           navigate('/profile')
+          setUserInfo(response.data.user)
           toast.success(`welcome ${response.data.user.email}`)
         }
       } catch (error) {
@@ -80,6 +83,7 @@ const Auth = () => {
           { withCredentials: true }
         );
         if (response.data.success) {
+          setUserInfo(response.data.user);
           if(response.data.user.profileSetup){
             navigate('/chat')
           }else{
