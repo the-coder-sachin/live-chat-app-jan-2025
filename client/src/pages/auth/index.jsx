@@ -7,13 +7,15 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs'
 import { LOGIN_ROUTE, SIGNUP_ROUTE } from '../../../utils/constants';
 import { toast } from 'sonner';
 import { apiClient } from '../../lib/api-client';
+import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-
+  
+  const navigate = useNavigate()
 
 
   const validator = (signup)=>{
@@ -48,6 +50,7 @@ const Auth = () => {
       return true;
     
   }
+
   const handleSignup = async ()=>{
     if(validator(true)){
       try {
@@ -56,6 +59,7 @@ const Auth = () => {
           password,
         }, {withCredentials: true});
         if(response.data.success){
+          navigate('/profile')
           toast.success(`welcome ${response.data.user.email}`)
         }
       } catch (error) {
@@ -63,6 +67,7 @@ const Auth = () => {
       }
     }
   }
+
   const handleLogin = async ()=>{
     if (validator(false)) {
       try {
@@ -75,6 +80,11 @@ const Auth = () => {
           { withCredentials: true }
         );
         if (response.data.success) {
+          if(response.data.user.profileSetup){
+            navigate('/chat')
+          }else{
+            navigate('/profile')
+          }
           toast.success(`welcome ${response.data.user.email}`);
         }else{
           toast.error(response.data.message)
