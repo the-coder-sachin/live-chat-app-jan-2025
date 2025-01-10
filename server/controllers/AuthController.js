@@ -102,3 +102,28 @@ export const login = async (req,res)=>{
         })
     }
 }
+
+// get user info
+
+export const getUser = async (req, res) => {
+  try {
+    const id = req.userId;
+    const user = await userModel.findById(id);
+    if(!user){
+        return res.status(500).send('No user found')
+    }
+    return res.status(200).json( {
+        id: user.id,
+        email: user.email,
+        profileSetup: user.profileSetup,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        color: user.color,
+      });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
