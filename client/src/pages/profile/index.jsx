@@ -1,45 +1,56 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAppStore } from '../../store';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppStore } from "../../store";
 import { IoIosArrowBack } from "react-icons/io";
-import { colors, getColor } from '../../lib/utils';
-import { toast } from 'sonner';
+import { colors, getColor } from "../../lib/utils";
+import { toast } from "sonner";
+import { apiClient } from "../../lib/api-client";
+import { UPDATE_PROFILE_ROUTE } from "../../../utils/constants";
 
 const Profile = () => {
-  
-  
-  
   const navigate = useNavigate();
-  const {userInfo , setUserInfo} = useAppStore()
-  
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const { userInfo, setUserInfo } = useAppStore();
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [profileImage, setProfileImage] = useState(null);
-  const [hovered, setHovered] = useState(false)
-  const [colorTheme, setColorTheme] = useState(3)
-  
-  const validator = () =>{
-    if(!firstName || !firstName.trim().length){
-      toast.error('please enter first name')
-      return false
+  const [hovered, setHovered] = useState(false);
+  const [colorTheme, setColorTheme] = useState(1);
+
+  const validator = () => {
+    if (!firstName || !firstName.trim().length) {
+      toast.error("please enter first name");
+      return false;
     }
-    if(!lastName || !lastName.trim().length){
-      toast.error('please enter last name')
-      return false
+    if (!lastName || !lastName.trim().length) {
+      toast.error("please enter last name");
+      return false;
     }
-    if(!colorTheme){
-      toast.error('please choose a color theme')
-      return false
+    if (!colorTheme) {
+      toast.error("please choose a color theme");
+      return false;
     }
     return true;
-  }
-  
-  const saveChanges = async ()=>{
-    if(validator()){
-      toast.success("your profile has been updated");
+  };
+
+  const saveChanges = async () => {
+    if (validator()) {
+      try {
+        const response = await apiClient.post(
+          UPDATE_PROFILE_ROUTE,
+          { firstName, lastName, color: colorTheme },
+          { withCredentials: true }
+        )
+        if (response.status === 200) {
+          setUserInfo({ ...response.data });
+          toast.success("your profile has been updated");
+        }
+      } catch (error) {
+        console.log(error);
+        toast("something went wrong!");
+      }
     }
-  }
-  
+  };
 
   return (
     <>
@@ -81,14 +92,14 @@ const Profile = () => {
             <input
               type="text"
               value={firstName}
-              onChange={e=>setFirstName(e.target.value)}
+              onChange={(e) => setFirstName(e.target.value)}
               placeholder="first name"
               className="outline-none rounded-full bg-red-300 text-white placeholder:text-red-100 shadow-red-300 shadow-md p-2 border-rose-100 border text-xs md:text-base pl-4"
             />
             <input
               type="text"
               value={lastName}
-              onChange={e=>setLastName(e.target.value)}
+              onChange={(e) => setLastName(e.target.value)}
               placeholder="last name"
               className="outline-none rounded-full bg-red-300 text-white placeholder:text-red-100 shadow-red-300 shadow-md p-2 border-rose-100 border text-xs md:text-base pl-4"
             />
@@ -96,14 +107,15 @@ const Profile = () => {
               {colors.map((color, index) => (
                 <div
                   key={index}
-                  onClick={() => setColorTheme(index+1)}
+                  onClick={() => setColorTheme(index + 1)}
                   className={`size-8 md:size-12 ${color} rounded-full border-2 hover:border-white hover:scale-[1.2] transition-all ease-in-out cursor-pointer`}
                 ></div>
               ))}
             </div>
-            <button 
-            onClick={saveChanges}
-            className="bg-rose-500 text-white font-semibold rounded-md py-2 hover:bg-rose-700 ">
+            <button
+              onClick={saveChanges}
+              className="bg-rose-500 text-white font-semibold rounded-md py-2 hover:bg-rose-700 "
+            >
               save changes
             </button>
           </div>
@@ -111,6 +123,6 @@ const Profile = () => {
       </main>
     </>
   );
-}
+};
 
-export default Profile
+export default Profile;

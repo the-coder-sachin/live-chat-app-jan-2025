@@ -52,9 +52,16 @@ const App = () => {
 
     
   if(loading){
-    return(
-      <div className='animate-pulse'>loading.....</div>
-    )
+    return (
+      <>
+        <div className="flex justify-center items-center min-h-screen bg-gray-200">
+          <div className="relative">
+            <div className="w-24 h-24 border-8 border-t-transparent border-green-500 rounded-full animate-spin"></div>
+            <div className="absolute w-4 h-4 bg-green-500 rounded-full top-0 left-0 animate-ping"></div>
+          </div>
+        </div>
+      </>
+    );
   }
   
   return (
