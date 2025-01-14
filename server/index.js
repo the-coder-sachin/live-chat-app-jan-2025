@@ -4,6 +4,7 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import { authRouter } from './routes/Authroutes.js'
+import path from 'path'
 
 dotenv.config()
 
@@ -23,6 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+// Serve static files from the 'uploads/profiles' folder
+app.use('/profiles', express.static(path.join(path.resolve(), 'uploads', 'profiles')));
 
 // api endpoints
 app.use('/api/auth', authRouter)

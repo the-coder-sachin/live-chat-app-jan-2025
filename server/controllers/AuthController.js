@@ -1,6 +1,9 @@
 import userModel from "../models/UserModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import {unlinkSync} from 'fs'
+import fs from 'fs'
+import path from 'path'
 
 const maxAge = 24 * 60 * 60 * 1000;
 // create token
@@ -120,6 +123,7 @@ export const getUser = async (req, res) => {
       firstname: user.firstname,
       lastname: user.lastname,
       color: user.color,
+      image: user.image
     });
   } catch (error) {
     res.json({
@@ -152,6 +156,111 @@ export const updateUser = async (req, res) => {
       firstname: firstName,
       lastname: lastName,
       color: color,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+export const updateProfilePicture = async (req, res) => {
+  try {
+    const id = req.userId;
+
+
+    // Save the file path to the database (relative path, not absolute path)
+    const filePath = req.file.filename; // Relative path for frontend
+
+    const user = await userModel.findById(id)
+    if (!user) {
+        return res.status(500).send("No user found please login again");
+    }
+    const updatedUser = await userModel.findByIdAndUpdate(
+      id,
+      {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        color: user.color,
+        image: filePath,
+        profileSetup: true,
+      },
+      {
+        new: true,
+      }
+    );
+    
+    return res.status(200).json({
+      email: user.email,
+      profileSetup: true,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      color: updateUser.color,
+      image: user.image,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const removeProfilePicture = async (req, res) => {
+  try {
+    const id = req.userId;
+
+    const user = await userModel.findById(id);
+    
+        if (!user) {
+          return res.status(500).send("No user found please login again");
+        }
+
+    // Check if the user has a profile picture
+    if (user.image) {
+      // Build the path to the image file
+      const imagePath = path.join(process.cwd(), "uploads/profiles", user.image); // Adjust the path according to your storage setup
+
+      // Check if the file exists on disk
+      fs.exists(imagePath, (exists) => {
+        if (exists) {
+          // Delete the file from disk
+          fs.unlink(imagePath, (err) => {
+            if (err) {
+              console.error("Error deleting file:", err);
+              return res
+                .status(500)
+                .send("Error deleting the profile picture from disk");
+            }
+
+            console.log("File deleted successfully");
+          });
+        }
+      });
+    }
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+      id,
+      {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        color: user.color,
+        image: null,
+        profileSetup: true,
+      },
+      {
+        new: true,
+      }
+    );
+    return res.status(200).json({
+      email: user.email,
+      profileSetup: true,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      color: user.color,
+      image: null,
     });
   } catch (error) {
     res.json({
