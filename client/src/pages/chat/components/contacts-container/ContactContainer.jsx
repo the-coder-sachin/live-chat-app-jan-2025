@@ -1,5 +1,6 @@
 import React from 'react'
 import appLogo from "@/assets/chat-box.png";
+import ProfileInfo from './components/profile-info/ProfileInfo';
 
 const ContactContainer = () => {
   return (
@@ -20,6 +21,7 @@ const ContactContainer = () => {
       <div className="flex justify-between pr-10 items-center">
       <Title text={'direct messages'}/>
       </div>
+      <ProfileInfo/>
     </div>
   );
 }
