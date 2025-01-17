@@ -53,6 +53,10 @@ const Profile = () => {
         console.log(error);
         toast("something went wrong!");
       }
+
+      setTimeout(() => {
+        navigate('/chat')
+      }, 1000);
     }
   };
 

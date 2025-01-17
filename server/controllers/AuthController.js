@@ -269,3 +269,27 @@ export const removeProfilePicture = async (req, res) => {
     });
   }
 };
+
+
+
+
+// logout function
+export const logout = async (req, res) => {
+  try {
+    // Clear the JWT cookie by setting it to expire in the past
+    res.clearCookie("jwt", {
+      secure: true,
+      sameSite: "None",
+    });
+
+    return res.json({
+      success: true,
+      message: "Successfully logged out",
+    });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

@@ -5,6 +5,7 @@ import {
   updateUser,
   updateProfilePicture,
   removeProfilePicture,
+  logout,
 } from "../controllers/AuthController.js";
 
 
@@ -47,3 +48,5 @@ authRouter.delete(
   verifyToken,
   removeProfilePicture
 );
+
+authRouter.post('/logout', logout)

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import victory from '@/assets/victory.svg'
 import Background from '@/assets/login2.png'
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import { useAppStore } from '../../store';
 const Auth = () => {
   const {setUserInfo} = useAppStore()
 
+  const [loginState, setLoginState] = useState('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -99,6 +100,22 @@ const Auth = () => {
     }
   }
 
+  useEffect(() => {
+    window.addEventListener('keydown', (e)=>{
+      const key = e.key
+      if(key == 'Enter'){
+        console.log('trye');
+       if(loginState == 'login'){
+        handleLogin()
+       } else{
+        handleSignup()
+       }
+      }
+    })
+  }, [loginState])
+  
+
+
   return (
     <div className="h-screen w-screen flex justify-center items-center">
       <div className="shadow-2xl h-5/6 w-4/5 flex justify-center items-center">
@@ -116,10 +133,24 @@ const Auth = () => {
 
             <Tabs defaultValue="login" className="w-full justify-center mt-4">
               <TabsList className="flex ">
-                <TabsTrigger className="w-full" value="login">
+                <TabsTrigger
+                  onClick={() => {
+                    setLoginState('login')
+                    console.log("click");
+                  }}
+                  className="w-full"
+                  value="login"
+                >
                   Login
                 </TabsTrigger>
-                <TabsTrigger className="w-full" value="signup">
+                <TabsTrigger
+                  onClick={() => {
+                    setLoginState('signup')
+                    console.log("click 2");
+                  }}
+                  className="w-full"
+                  value="signup"
+                >
                   Sign Up
                 </TabsTrigger>
               </TabsList>
@@ -136,7 +167,7 @@ const Auth = () => {
                   className="rounded-full outline-none text-xs placeholder:text-neutral-400 active:outline-none"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value )}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="password"
                   required
                 />
