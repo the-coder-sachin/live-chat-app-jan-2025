@@ -11,36 +11,35 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '../../store';
 
 const Auth = () => {
-  const {setUserInfo} = useAppStore()
+  const { setUserInfo } = useAppStore();
 
-  const [loginState, setLoginState] = useState('login')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  
-  const navigate = useNavigate()
+  const [loginState, setLoginState] = useState("login");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
+  const navigate = useNavigate();
 
-  const validator = (signup)=>{
+  const validator = (signup) => {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if(!email){
-      toast.error('please enter email')
+    if (!email) {
+      toast.error("please enter email");
       return false;
     }
-  
+
     if (!regex.test(email)) {
       toast.error("please enter a valid email");
       return false;
-    } 
-     if (!password) {
+    }
+    if (!password) {
       toast.error("please enter password");
       return false;
-    } 
-     if (password.length < 7) {
+    }
+    if (password.length < 7) {
       toast.error("please enter a strong password");
       return false;
-    } 
-    if(signup){
+    }
+    if (signup) {
       if (!confirmPassword) {
         toast.error("please confirm the password");
         return false;
@@ -48,31 +47,34 @@ const Auth = () => {
       if (password != confirmPassword) {
         toast.error("please enter correct password");
         return false;
-      } 
-    }
-      return true;
-    
-  }
-
-  const handleSignup = async ()=>{
-    if(validator(true)){
-      try {
-        const response = await apiClient.post(SIGNUP_ROUTE, {
-          email,
-          password,
-        }, {withCredentials: true});
-        if(response.data.success){
-          navigate('/profile')
-          setUserInfo(response.data.user)
-          toast.success(`welcome ${response.data.user.email}`)
-        }
-      } catch (error) {
-        toast.error(error.message)
       }
     }
-  }
+    return true;
+  };
 
-  const handleLogin = async ()=>{
+  const handleSignup = async () => {
+    if (validator(true)) {
+      try {
+        const response = await apiClient.post(
+          SIGNUP_ROUTE,
+          {
+            email,
+            password,
+          },
+          { withCredentials: true }
+        );
+        if (response.data.success) {
+          navigate("/profile");
+          setUserInfo(response.data.user);
+          toast.success(`welcome ${response.data.user.email}`);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  const handleLogin = async () => {
     if (validator(false)) {
       try {
         const response = await apiClient.post(
@@ -85,36 +87,43 @@ const Auth = () => {
         );
         if (response.data.success) {
           setUserInfo(response.data.user);
-          if(response.data.user.profileSetup){
-            navigate('/chat')
-          }else{
-            navigate('/profile')
+          if (response.data.user.profileSetup) {
+            navigate("/chat");
+          } else {
+            navigate("/profile");
           }
           toast.success(`welcome ${response.data.user.email}`);
-        }else{
-          toast.error(response.data.message)
+        } else {
+          toast.error(response.data.message);
         }
       } catch (error) {
         toast.error(error.message);
       }
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener('keydown', (e)=>{
-      const key = e.key
-      if(key == 'Enter'){
-        console.log('trye');
-       if(loginState == 'login'){
-        handleLogin()
-       } else{
-        handleSignup()
-       }
+    const handleKeyPress = (e) => {
+      const key = e.key;
+      if (key === "Enter") {
+        if (loginState === "login") {
+          handleLogin();
+        } else {
+          handleSignup();
+        }
       }
-    })
-  }, [loginState])
-  
+    };
 
+    // Attach event listener
+    window.addEventListener("keydown", handleKeyPress);
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [email, password, confirmPassword, loginState]); // Add dependencies here to keep the event listener in sync with state
+
+  
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
@@ -135,8 +144,7 @@ const Auth = () => {
               <TabsList className="flex ">
                 <TabsTrigger
                   onClick={() => {
-                    setLoginState('login')
-                    console.log("click");
+                    setLoginState("login");
                   }}
                   className="w-full"
                   value="login"
@@ -145,8 +153,7 @@ const Auth = () => {
                 </TabsTrigger>
                 <TabsTrigger
                   onClick={() => {
-                    setLoginState('signup')
-                    console.log("click 2");
+                    setLoginState("signup");
                   }}
                   className="w-full"
                   value="signup"

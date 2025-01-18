@@ -103,7 +103,7 @@ const Profile = () => {
       setProfileImage(`http://localhost:3000/profiles/${userInfo.image}`);
     }
     console.log(userInfo);
-    
+     
   }, [userInfo, setUserInfo, ])
   
 

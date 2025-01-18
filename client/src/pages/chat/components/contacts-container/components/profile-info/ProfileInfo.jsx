@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAppStore } from "../../../../../../store";
-import { host } from "../../../../../../../utils/constants.js";
+import { host, LOGOUT_ROUTE } from "../../../../../../../utils/constants.js";
 import { getColor } from "@/lib/utils";
 import {
   Tooltip,
@@ -9,12 +9,31 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { FaUserEdit } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { IoIosPower } from "react-icons/io";
+import { apiClient } from "../../../../../../lib/api-client.js";
+import { toast } from "sonner";
 
 
 const ProfileInfo = () => {
-  const { userInfo } = useAppStore();
+  const { userInfo, setUserInfo } = useAppStore();
   const navigate = useNavigate()
+
+  const logout = async ()=>{
+    try {
+      const response = await apiClient.get(LOGOUT_ROUTE, {withCredentials:true})
+      if(response.data.success){
+        toast(response.data.message);
+        setUserInfo(null)
+        navigate('/auth')
+      }else{
+        toast('something went wrong')
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
   
 
   return (
@@ -50,13 +69,24 @@ const ProfileInfo = () => {
       <div className="flex gap-5">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
-              <FaUserEdit 
-              onClick={()=>navigate('/profile')}
-              className="text-xl text-yellow-600"/>
+            <TooltipTrigger className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-100 transition-all">
+              <FaUserEdit
+                onClick={() => navigate("/profile")}
+                className="text-xl text-yellow-600"
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p>Edit Profile</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-100 transition-all">
+              <IoIosPower onClick={logout} className="text-xl text-red-600" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-rose-400">Log out</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

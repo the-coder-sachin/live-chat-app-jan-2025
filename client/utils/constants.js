@@ -7,3 +7,4 @@ export const USER_INFO_ROUTE = `${AUTH_ROUTES}/user-info`
 export const UPDATE_PROFILE_ROUTE = `${AUTH_ROUTES}/update-user`
 export const UPDATE_PROFILE_IMAGE_ROUTE = `${AUTH_ROUTES}/update-profile-image`
 export const REMOVE_PROFILE_IMAGE_ROUTE = `${AUTH_ROUTES}/remove-profile-image`
+export const LOGOUT_ROUTE = `${AUTH_ROUTES}/logout`

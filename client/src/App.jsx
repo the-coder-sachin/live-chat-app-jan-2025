@@ -13,6 +13,10 @@ const PrivateRoute = ({children})=>{
   const isAuthenticated = !!userInfo;
   return isAuthenticated ? children : <Navigate to='/auth'/>
 }
+const ChatRoute = ({children})=>{
+  const {userInfo} = useAppStore();  
+  return userInfo.profileSetup ? children : <Navigate to='/profile'/>
+}
 
 const AuthRoute = ({children})=>{
   const {userInfo} = useAppStore();
@@ -34,8 +38,8 @@ const App = () => {
         }
         
       } catch (error) {
-        console.log(error);
-        toast.error(error.message)
+        console.log(error.message);
+        toast.error(error.response.data)
       }
       finally{
         setLoading(false)
@@ -74,7 +78,9 @@ const App = () => {
         }/>
       <Route path='/chat' element={
         <PrivateRoute>
+          <ChatRoute>
           <Chat/>
+          </ChatRoute>
         </PrivateRoute>
         }/>
       <Route path='/profile' element={
