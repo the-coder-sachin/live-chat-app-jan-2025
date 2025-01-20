@@ -23,9 +23,12 @@ import Lottie from 'react-lottie';
 import { animationDefaultOptions, getColor } from '../../../../../../lib/utils';
 import { apiClient } from '../../../../../../lib/api-client';
 import { host, SEARCH_CONTACT } from '../../../../../../../utils/constants';
+import { useAppStore } from '../../../../../../store';
 
 
 const NewDm = () => {
+
+  const {setSelectedChatType, setSelectedChatData} = useAppStore();  
   const [openNewContactModel, setOpenNewContactModel] = useState(false)
   const [searchedContactList, setSearchedContactList] = useState([])
 
@@ -48,6 +51,13 @@ const NewDm = () => {
         console.log({error});
         
     }
+  }
+
+  const selectContact = (contact) =>{
+     setOpenNewContactModel(false);
+     setSearchedContactList([])
+     setSelectedChatData(contact)
+     setSelectedChatType('contact')
   }
   return (
     <>
@@ -91,6 +101,7 @@ const NewDm = () => {
                     (contact, id) =>
                       contact.profileSetup && (
                         <div
+                          onClick={()=>selectContact(contact)}
                           key={id}
                           className="flex justify-between items-center p-3 bg-[#101013] rounded-lg cursor-pointer"
                         >
