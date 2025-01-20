@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import { authRouter } from './routes/Authroutes.js'
 import path from 'path'
 import { contactRouter } from './routes/ContactRoutes.js'
+import setupShocket from './socket.js'
 
 dotenv.config()
 
@@ -39,5 +40,7 @@ app.get('/', (req,res)=>{
 const server = app.listen(port, ()=>{
     console.log(`server running... at port ${port}`)
 })
+
+setupShocket(server)
 
 mongoose.connect(databaseURL).then(()=>console.log('db connected')).catch((err)=>console.log(err.message))
