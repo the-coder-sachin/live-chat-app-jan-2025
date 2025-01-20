@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import mongoose from 'mongoose'
 import { authRouter } from './routes/Authroutes.js'
 import path from 'path'
+import { contactRouter } from './routes/ContactRoutes.js'
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ app.use('/profiles', express.static(path.join(path.resolve(), 'uploads', 'profil
 
 // api endpoints
 app.use('/api/auth', authRouter)
+app.use('/api/contact', contactRouter)
 
 app.get('/', (req,res)=>{
     res.send('hello sachin') 
