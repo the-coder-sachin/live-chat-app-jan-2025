@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import { messageModel } from "./models/MessageModel.js";
 
 const setupShocket = (server) => {
     const io = new Server(server,
@@ -12,6 +13,25 @@ const setupShocket = (server) => {
     )
 
     const userSocketMap = new Map()
+
+    const sendMessage = async (message) => {
+        const senderShocketId = userSocketMap.get(message.sender);
+        const recipientShocketId = userSocketMap.get(message.recipient);
+
+        const createdMessage = await messageModel.create(message)
+
+        const messageData = await messageModel.findById(createdMessage._id)
+        .populate('sender', 'id email firstname lastname image color')
+        .populate('recipient', 'id email firstname lastname image color')
+
+        if(recipientShocketId){
+            io.to(recipientShocketId).emit('recieveMessage', messageData)
+        }
+
+        if(senderShocketId){
+            io.to(senderShocketId).emit('recieveMessage', messageData)
+        }
+    }
 
     const disconnect = (socket) =>{
         console.log(`client disconnect : ${socket.id}`);
@@ -33,6 +53,8 @@ const setupShocket = (server) => {
             console.log(`user ID missing during connection`);
             
         }
+
+        socket.on("sendMessage" , sendMessage)
 
         socket.on("disconnect", ()=> disconnect(socket))
     })
