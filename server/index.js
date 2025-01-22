@@ -7,6 +7,7 @@ import { authRouter } from './routes/Authroutes.js'
 import path from 'path'
 import { contactRouter } from './routes/ContactRoutes.js'
 import setupShocket from './socket.js'
+import { messageRoutes } from './routes/MessageRoutes.js'
 
 dotenv.config()
 
@@ -32,6 +33,7 @@ app.use('/profiles', express.static(path.join(path.resolve(), 'uploads', 'profil
 // api endpoints
 app.use('/api/auth', authRouter)
 app.use('/api/contact', contactRouter)
+app.use('/api/messages', messageRoutes)
 
 app.get('/', (req,res)=>{
     res.send('hello sachin') 
