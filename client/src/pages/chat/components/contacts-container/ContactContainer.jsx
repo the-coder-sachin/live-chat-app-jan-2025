@@ -1,29 +1,52 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import appLogo from "@/assets/chat-box.png";
 import ProfileInfo from './components/profile-info/ProfileInfo';
 import NewDm from './components/new-dm/NewDm';
+import { apiClient } from '../../../../lib/api-client';
+import { GET_DM_LIST } from '../../../../../utils/constants';
+import { useAppStore } from '../../../../store';
+import ContactList from '../../../../components/ui/ContactList';
 
 const ContactContainer = () => {
+
+  const { setDirectMessagesContacts, directMessagesContacts } = useAppStore();
+
+  useEffect(()=>{
+    const getContacts = async ()=>{
+      const response = await apiClient.get(GET_DM_LIST, {withCredentials: true});
+
+      if(response.data && response.data.contact){
+        setDirectMessagesContacts(response.data.contact)
+      }
+    }
+    getContacts()
+  },[])
+
+
   return (
-    <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[20vh] bg-[#1b1c24] border-r-2 border-[#2f303b] w-[100vw] ">
-      <Logo/>
+    <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[20vh] bg-[#1b1c24] border-r-2 border-[#2f303b] w-[100vw] select-none">
+      <Logo />
 
       <div className="my-5"></div>
       <div className="flex justify-between pr-10 items-center">
-      <Title text={'direct messages'}/>
-      <NewDm/>
+        <Title text={"direct messages"} />
+        <NewDm />
+      </div>
+
+      <div className="max-h-[38vh] overflow-y-auto scrollbar-none">
+          <ContactList contacts={directMessagesContacts} /> 
       </div>
 
       <div className="my-5"></div>
       <div className="flex justify-between pr-10 items-center">
-      <Title text={'channels'}/>
+        <Title text={"channels"} />
       </div>
 
       <div className="my-5"></div>
       <div className="flex justify-between pr-10 items-center">
-      <Title text={'direct messages'}/>
+        <Title text={"direct messages"} />
       </div>
-      <ProfileInfo/>
+      <ProfileInfo />
     </div>
   );
 }

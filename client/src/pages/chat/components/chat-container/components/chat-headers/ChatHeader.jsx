@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { RiCloseFill } from "react-icons/ri";
 import { useAppStore } from "../../../../../../store";
 import { host } from "../../../../../../../utils/constants";
