@@ -29,6 +29,7 @@ app.use(cookieParser());
 
 // Serve static files from the 'uploads/profiles' folder
 app.use('/profiles', express.static(path.join(path.resolve(), 'uploads', 'profiles')));
+app.use("/uploads/files", express.static(path.join(path.resolve(), "uploads", "files")));
 
 // api endpoints
 app.use('/api/auth', authRouter)

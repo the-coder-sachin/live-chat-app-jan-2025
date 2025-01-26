@@ -2,9 +2,10 @@ import React, { useEffect, useRef } from 'react'
 import { useAppStore } from '../../../../../../store'
 import moment from 'moment'
 import bg from '@/assets/dark-chat-background.jpg'
-import { AwardIcon } from 'lucide-react'
 import { apiClient } from '../../../../../../lib/api-client'
-import { GET_ALL_MESSAGES } from '../../../../../../../utils/constants'
+import { IoDocumentTextOutline } from "react-icons/io5";
+import { MdOutlineFileDownload } from "react-icons/md";
+import { GET_ALL_MESSAGES, host } from '../../../../../../../utils/constants.js'
 
 const MessageContainer = () => {
 
@@ -22,7 +23,7 @@ const MessageContainer = () => {
         );
 
         if (response.data.messages) {
-          setSelectedChatMessages(response.data.messages);
+          setSelectedChatMessages(response.data.messages);          
         }
       } catch (error) {
         console.log({ error });
@@ -40,6 +41,12 @@ const MessageContainer = () => {
       scrollRef.current.scrollIntoView({behaviour: 'smooth'})
     }
   },[selectedChatMessages])
+
+  const checkIfImage = (filePath)=>{
+    const imgRegex = /\.(jpg|jpeg|png|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
+
+    return imgRegex.test(filePath)
+  }
 
   const renderMessages = ()=>{
     let lastDate = null;
@@ -74,6 +81,35 @@ const MessageContainer = () => {
              }border inline-block py-2 px-4 my-1 max-w-[50%] break-words`}
            >
              {message.content}
+           </div>
+         )}
+         {message.messageType === "file" && (
+           <div
+             className={`${
+               message.sender !== selectedChatData._id
+                 ? "bg-[#c0029d3a] text-[#f9b7fe] border-[#ca73f3] rounded-xl rounded-br-none "
+                 : "bg-[#038bcf8e] text-[#bcfbff] border-[#ffffff]/20 rounded-xl rounded-tl-none "
+             }border inline-block p-1  my-1 max-w-[50%] break-words`}
+           >
+             {checkIfImage(message.fileUrl) ? (
+               <div className="cursor-pointer">
+                 <img
+                   src={`${host}${message.fileUrl}`}
+                   alt="image"
+                   className="size-52 object-cover rounded-xl"
+                 />
+               </div>
+             ) : (
+               <div className="flex justify-center items-center gap-5">
+                 <span className="rounded-full p-3 text-3xl text-neutral-400">
+                   <IoDocumentTextOutline />
+                 </span>
+                 <span className='text-start text-xs'>{message.fileUrl.split("/").pop()}</span>
+                 <span className="rounded-full p-3 text-xl text-neutral-400">
+                   <MdOutlineFileDownload />
+                 </span>
+               </div>
+             )}
            </div>
          )}
          <div className="text-xs text-gray-600">
