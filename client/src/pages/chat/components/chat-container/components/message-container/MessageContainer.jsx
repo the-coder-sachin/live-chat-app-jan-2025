@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useAppStore } from '../../../../../../store'
 import moment from 'moment'
 import bg from '@/assets/dark-chat-background.jpg'
@@ -11,6 +11,8 @@ const MessageContainer = () => {
 
   const {selectedChatType, selectedChatData, selectedChatMessages, setSelectedChatMessages} = useAppStore();
   const scrollRef = useRef();
+  const [showImage, setShowImage] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
 
   useEffect( () => {
     const getAllMessages = async () =>{
@@ -48,6 +50,18 @@ const MessageContainer = () => {
     return imgRegex.test(filePath)
   }
 
+  const handleDownload = async (url)=>{
+    const response = await apiClient.get(`${host}${url}`, {responseType: Blob})
+    const urlBlob = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement("a")
+    link.href = urlBlob
+    link.setAttribute('download', url.split('/').pop());
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(urlBlob);
+  }
+
   const renderMessages = ()=>{
     let lastDate = null;
     return selectedChatMessages.map((message, index)=>
@@ -78,7 +92,7 @@ const MessageContainer = () => {
                message.sender !== selectedChatData._id
                  ? "bg-[#c0029dd9] text-[#f9b7fe] border-[#ca73f3] rounded-full rounded-br-none "
                  : "bg-[#038bcf8e] text-[#bcfbff] border-[#ffffff]/20 rounded-full rounded-tl-none "
-             }border inline-block py-2 px-4 my-1 max-w-[50%] break-words`}
+             }border inline-block py-2 px-4 my-1 lg:max-w-[50%]  break-words`}
            >
              {message.content}
            </div>
@@ -89,7 +103,7 @@ const MessageContainer = () => {
                message.sender !== selectedChatData._id
                  ? "bg-[#c0029d3a] text-[#f9b7fe] border-[#ca73f3] rounded-xl rounded-br-none "
                  : "bg-[#038bcf8e] text-[#bcfbff] border-[#ffffff]/20 rounded-xl rounded-tl-none "
-             }border inline-block p-1  my-1 max-w-[50%] break-words`}
+             }border inline-block p-1  my-1 lg:max-w-[50%] break-words`}
            >
              {checkIfImage(message.fileUrl) ? (
                <div className="cursor-pointer">
@@ -101,11 +115,13 @@ const MessageContainer = () => {
                </div>
              ) : (
                <div className="flex justify-center items-center gap-5">
-                 <span className="rounded-full p-3 text-3xl text-neutral-400">
+                 <span className="rounded-full p-3 text-3xl text-neutral-200">
                    <IoDocumentTextOutline />
                  </span>
                  <span className='text-start text-xs'>{message.fileUrl.split("/").pop()}</span>
-                 <span className="rounded-full p-3 text-xl text-neutral-400">
+                 <span
+                 onClick={()=>handleDownload(message.fileUrl)}
+                 className="rounded-full p-3 text-2xl text-neutral-400 hover:bg-black/30 cursor-pointer">
                    <MdOutlineFileDownload />
                  </span>
                </div>
