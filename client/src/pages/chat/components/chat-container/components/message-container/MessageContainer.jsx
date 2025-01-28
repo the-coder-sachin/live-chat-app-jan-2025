@@ -3,9 +3,10 @@ import { useAppStore } from '../../../../../../store'
 import moment from 'moment'
 import bg from '@/assets/dark-chat-background.jpg'
 import { apiClient } from '../../../../../../lib/api-client'
-import { IoDocumentTextOutline } from "react-icons/io5";
+import { IoChevronBack, IoDocumentTextOutline } from "react-icons/io5";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { GET_ALL_MESSAGES, host } from '../../../../../../../utils/constants.js'
+import { IoChevronBackCircle } from "react-icons/io5";
 
 const MessageContainer = () => {
 
@@ -106,7 +107,11 @@ const MessageContainer = () => {
              }border inline-block p-1  my-1 lg:max-w-[50%] break-words`}
            >
              {checkIfImage(message.fileUrl) ? (
-               <div className="cursor-pointer">
+               <div 
+               onClick={()=>{setImageURL(message.fileUrl);
+                setShowImage(true)
+               }}
+               className="cursor-pointer">
                  <img
                    src={`${host}${message.fileUrl}`}
                    alt="image"
@@ -140,9 +145,35 @@ const MessageContainer = () => {
 
   return (
     <div className="flex-1 overflow-y-auto scrollbar-none p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
-      
       {renderMessages()}
       <div ref={scrollRef} />
+      {showImage && (
+        <div className="h-[100vh] w-[100vw] backdrop-blur-md fixed top-0 left-0 flex justify-center items-center flex-col z-10 bg-black/30">
+          <div className="flex fixed left-0 top-0 justify-center items-center ">
+            <button
+              className="rounded-full m-3 p-3 text-2xl text-neutral-400 hover:text-white hover:bg-black/40 cursor-pointer flex justify-center items-center"
+              onClick={() => setShowImage(false)}
+            >
+              <IoChevronBack />
+            </button>
+          </div>
+          <div>
+            <img
+              src={`${host}${imageURL}`}
+              alt="image"
+              className="w-fit h-fit max-w-[90vw] max-h-[90vh] object-cover rounded-md"
+            />
+          </div>
+          <div className="flex fixed left-0 bottom-0 justify-center items-center ">
+            <button
+              onClick={() => handleDownload(imageURL)}
+              className="rounded-full m-3 p-3 text-2xl text-neutral-400 hover:bg-black/30 hover:text-white cursor-pointer"
+            >
+              <MdOutlineFileDownload />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
