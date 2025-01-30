@@ -10,7 +10,7 @@ import { IoChevronBackCircle } from "react-icons/io5";
 
 const MessageContainer = () => {
 
-  const {selectedChatType, selectedChatData, selectedChatMessages, setSelectedChatMessages} = useAppStore();
+  const {selectedChatType, selectedChatData, selectedChatMessages, setSelectedChatMessages, setIsDownloading, setFileDownloadProgress} = useAppStore();
   const scrollRef = useRef();
   const [showImage, setShowImage] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -52,7 +52,13 @@ const MessageContainer = () => {
   }
 
   const handleDownload = async (url)=>{
-    const response = await apiClient.get(`${host}${url}`, {responseType: Blob})
+    setIsDownloading(true);
+    setFileDownloadProgress(0)
+    const response = await apiClient.get(`${host}${url}`, {responseType: Blob, onDownloadProgres: (ProgressEvent)=>{
+      const {loaded, total} = ProgressEvent;
+      const progress = Math.round(loaded/total*100);
+      setFileDownloadProgress(progress) 
+    }})
     const urlBlob = window.URL.createObjectURL(new Blob([response.data]))
     const link = document.createElement("a")
     link.href = urlBlob
@@ -61,6 +67,8 @@ const MessageContainer = () => {
     link.click();
     link.remove();
     window.URL.revokeObjectURL(urlBlob);
+    setIsDownloading(false);
+    setFileDownloadProgress(0)
   }
 
   const renderMessages = ()=>{
