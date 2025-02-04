@@ -3,9 +3,10 @@ import appLogo from "@/assets/chat-box.png";
 import ProfileInfo from './components/profile-info/ProfileInfo';
 import NewDm from './components/new-dm/NewDm';
 import { apiClient } from '../../../../lib/api-client';
-import { GET_DM_LIST } from '../../../../../utils/constants';
+import { GET_ALL_CONTACTS, GET_DM_LIST } from '../../../../../utils/constants.js';
 import { useAppStore } from '../../../../store';
 import ContactList from '../../../../components/ui/ContactList';
+import CreateChannel from './components/create-channel/CreateChannel.jsx';
 
 const ContactContainer = () => {
 
@@ -14,12 +15,25 @@ const ContactContainer = () => {
   useEffect(()=>{
     const getContacts = async ()=>{
       const response = await apiClient.get(GET_DM_LIST, {withCredentials: true});
-
+      console.log(response);
+      
       if(response.data && response.data.contact){
         setDirectMessagesContacts(response.data.contact)
       }
     }
     getContacts()
+  },[])
+
+  useEffect(()=>{
+    const getAllContacts = async ()=>{
+      const response = await apiClient.get(GET_ALL_CONTACTS, {withCredentials: true});
+      console.log(response);
+      
+      if(response.data && response.data.contact){
+        setDirectMessagesContacts(response.data.contact)
+      }
+    }
+    getAllContacts()
   },[])
 
 
@@ -40,6 +54,7 @@ const ContactContainer = () => {
       <div className="my-5"></div>
       <div className="flex justify-between pr-10 items-center">
         <Title text={"channels"} />
+        <CreateChannel/>
       </div>
 
       <div className="my-5"></div>
