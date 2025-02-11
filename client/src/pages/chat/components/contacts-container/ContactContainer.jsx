@@ -3,14 +3,14 @@ import appLogo from "@/assets/chat-box.png";
 import ProfileInfo from './components/profile-info/ProfileInfo';
 import NewDm from './components/new-dm/NewDm';
 import { apiClient } from '../../../../lib/api-client';
-import { GET_ALL_CONTACTS, GET_DM_LIST } from '../../../../../utils/constants.js';
+import { GET_ALL_CONTACTS, GET_DM_LIST, GET_USER_CHANNEL } from '../../../../../utils/constants.js';
 import { useAppStore } from '../../../../store';
 import ContactList from '../../../../components/ui/ContactList';
 import CreateChannel from './components/create-channel/CreateChannel.jsx';
 
 const ContactContainer = () => {
 
-  const { setDirectMessagesContacts, directMessagesContacts } = useAppStore();
+  const { setDirectMessagesContacts, directMessagesContacts, channels, setChannels } = useAppStore();
 
   useEffect(()=>{
     const getContacts = async ()=>{
@@ -21,7 +21,16 @@ const ContactContainer = () => {
         setDirectMessagesContacts(response.data.contact)
       }
     }
+    const getChannels = async ()=>{
+      const response = await apiClient.get(GET_USER_CHANNEL, {withCredentials: true});
+      console.log(response);
+      
+      if(response.data && response.data.channels){
+        setChannels(response.data.channels)
+      }
+    }
     getContacts()
+    getChannels()
   },[])
 
   useEffect(()=>{
@@ -34,6 +43,8 @@ const ContactContainer = () => {
       }
     }
     getAllContacts()
+    console.log(channels);
+    
   },[])
 
 
@@ -48,13 +59,17 @@ const ContactContainer = () => {
       </div>
 
       <div className="max-h-[38vh] overflow-y-auto scrollbar-none">
-          <ContactList contacts={directMessagesContacts} /> 
+        <ContactList contacts={directMessagesContacts} />
       </div>
 
       <div className="my-5"></div>
       <div className="flex justify-between pr-10 items-center">
         <Title text={"channels"} />
-        <CreateChannel/>
+        <CreateChannel />
+      </div>
+
+      <div className="max-h-[38vh] overflow-y-auto scroll-m-1">
+        <ContactList contacts={channels} isChannel={true} />
       </div>
 
       <div className="my-5"></div>

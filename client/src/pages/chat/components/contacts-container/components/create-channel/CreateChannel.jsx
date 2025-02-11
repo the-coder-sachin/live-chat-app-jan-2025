@@ -22,12 +22,12 @@ import EmptyChatContainer from "../../../empty-chat-container.jsx/EmptyChatConta
 import Lottie from "react-lottie";
 import { animationDefaultOptions, getColor } from "../../../../../../lib/utils";
 import { apiClient } from "../../../../../../lib/api-client";
-import { GET_ALL_CONTACTS, host, SEARCH_CONTACT } from "../../../../../../../utils/constants";
+import { CREATE_CHANNEL, GET_ALL_CONTACTS, host, SEARCH_CONTACT } from "../../../../../../../utils/constants";
 import { useAppStore } from "../../../../../../store";
 import MultipleSelector from "../../../../../../components/ui/multipleselect";
 
 const CreateChannel = () => {
-  const { setSelectedChatType, setSelectedChatData } = useAppStore();
+  const { setSelectedChatType, setSelectedChatData, addChannel } = useAppStore();
   const [newChannelModel, setNewChannelModel] = useState(false);
   const [searchedContactList, setSearchedContactList] = useState([]);
   const [allContacts, setAllContacts] = useState([]);
@@ -44,7 +44,21 @@ const CreateChannel = () => {
     getData()
   }, [])
     const createChannel = async ()=>{
-
+      try {
+        if(channelName.length>0 && selectedContact.length>0){
+          const response = await apiClient.post(CREATE_CHANNEL, {name: channelName, members: selectedContact.map(contact=>contact.value)}, {withCredentials: true})
+          if(response.status === 200){
+            console.log(response);
+            setChannelName('');
+            setSelectedContact([]);
+            setNewChannelModel(false)
+            addChannel(response.data.channel)
+          }
+        }
+      } catch (error) {
+        console.log({error});
+        
+      }
     }
 
  
@@ -97,7 +111,7 @@ const CreateChannel = () => {
                 } 
                 />
             </div>
-            <button className="w-full bg-cyan-600 py-2 md:text-lg rounded-full hover:bg-cyan-700">create channel</button>
+            <button onClick={createChannel} className="w-full bg-cyan-600 py-2 md:text-lg rounded-full hover:bg-cyan-700">create channel</button>
             
           </DialogContent>
         </Dialog>

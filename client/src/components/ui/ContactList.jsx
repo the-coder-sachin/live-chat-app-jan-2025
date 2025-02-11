@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { useAppStore } from '../../store'
 import { host } from '../../../utils/constants'
 import { getColor } from '../../lib/utils'
+import { MdGroups2 } from "react-icons/md";
 
 const ContactList = ({contacts, isChannel = false}) => {
    
@@ -10,6 +11,7 @@ const ContactList = ({contacts, isChannel = false}) => {
     setSelectedChatData,
     setSelectedChatType,
     setSelectedChatMessages,
+    channels
     } = useAppStore();
 
 
@@ -21,6 +23,11 @@ const ContactList = ({contacts, isChannel = false}) => {
     }
 
   }
+  useEffect(() => {
+    console.log(channels);
+    console.log(contacts);
+  }, [])
+  
   
   return (
     <div className="mt-5">
@@ -35,7 +42,7 @@ const ContactList = ({contacts, isChannel = false}) => {
           }`}
         >
           <div className="flex gap-5 select-none">
-            {!isChannel && (
+            {!isChannel ? (
               <>
                 <div className="avatar size-11 bg-white rounded-full flex justify-center items-center">
                   {contact.image ? (
@@ -63,8 +70,14 @@ const ContactList = ({contacts, isChannel = false}) => {
                   <p className="email italic text-xs">{`${contact.email}`}</p>
                 </div>
               </>
+            ): (
+              <p key={index} className='flex justify-center items-center'>
+                <span className="mr-3 text-2xl">
+                  <MdGroups2 />
+                </span>
+                {contact.name}
+              </p>
             )}
-            {isChannel && (<span>#channel</span>)}
           </div>
         </div>
       ))}

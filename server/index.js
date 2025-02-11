@@ -8,6 +8,7 @@ import path from 'path'
 import { contactRouter } from './routes/ContactRoutes.js'
 import setupShocket from './socket.js'
 import { messageRoutes } from './routes/MessageRoutes.js'
+import { channelRoutes } from './routes/ChannelRoutes.js'
 
 dotenv.config()
 
@@ -35,6 +36,7 @@ app.use("/uploads/files", express.static(path.join(path.resolve(), "uploads", "f
 app.use('/api/auth', authRouter)
 app.use('/api/contact', contactRouter)
 app.use('/api/messages', messageRoutes)
+app.use('/api/channel' , channelRoutes)
 
 app.get('/', (req,res)=>{
     res.send('hello sachin') 
