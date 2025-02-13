@@ -7,6 +7,7 @@ import { IoChevronBack, IoDocumentTextOutline } from "react-icons/io5";
 import { MdOutlineFileDownload } from "react-icons/md";
 import {
   GET_ALL_MESSAGES,
+  GET_CHANNEL_MESSAGES,
   host,
 } from "../../../../../../../utils/constants.js";
 import { IoChevronBackCircle } from "react-icons/io5";
@@ -42,9 +43,24 @@ const MessageContainer = () => {
         console.log({ error });
       }
     };
+
+    const getAllChannelMessages = async ()=>{
+      try {
+        const response = await apiClient.get(`${GET_CHANNEL_MESSAGES}/${selectedChatData._id}`, {withCredentials: true})
+        if (response.data.messages) {
+          setSelectedChatMessages(response.data.messages);
+        }
+        
+      } catch (error) {
+        console.log({error});
+        
+      }
+    }
     if (selectedChatData._id) {
       if (selectedChatType === "contact") {
         getAllMessages();
+      }else if(selectedChatType === 'channel'){
+        getAllChannelMessages();
       }
     }
   }, [setSelectedChatMessages, selectedChatData, selectedChatType]);
@@ -85,8 +101,6 @@ const MessageContainer = () => {
   };
 
   const renderMessages = () => {
-    console.log(selectedChatMessages);
-
     let lastDate = null;
     return selectedChatMessages.map((message, index) => {
       const messageDate = moment(message.timeStamp).format("YYYY-MM-DD");
