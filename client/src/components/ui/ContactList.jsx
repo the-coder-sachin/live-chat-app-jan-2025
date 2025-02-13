@@ -16,6 +16,7 @@ const ContactList = ({contacts, isChannel = false}) => {
 
 
   const handleClick = (contact)=>{
+   
     if(isChannel){setSelectedChatType('channel')}else setSelectedChatType('contact')
     setSelectedChatData(contact)
     if(selectedChatData && selectedChatData._id !== contacts._id){

@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { messageModel } from "./models/MessageModel.js";
+import { channelModel } from "./models/ChannelModel.js";
 
 const setupShocket = (server) => {
     const io = new Server(server,
@@ -32,6 +33,41 @@ const setupShocket = (server) => {
             io.to(senderShocketId).emit('recieveMessage', messageData)
         }
     }
+    const sendChannelMessage = async (message)=>{
+        const {channelId, sender, content, messageType, fileUrl} = message;
+
+        const createdMessage = await messageModel.create({
+            sender,
+            recipient:null,
+            content,
+            messageType,
+            timeStamp: new Date(),
+            fileUrl,
+        })
+
+        const messageData = await messageModel.findById(createdMessage._id).populate('sender','id email firstname lastname image color').exec()
+
+        await channelModel.findByIdAndUpdate(channelId, {
+            $push:{message: createdMessage._id}
+        })
+
+        const channel = await channelModel.findById(channelId).populate('members');
+
+        const finalData = {...messageData._doc, channelId: channel._id};
+
+        if(channel && channel.members){
+            channel.members.forEach(member=>{
+                const memberSocketId = userSocketMap.get(member._id.toString())
+                if(memberSocketId){
+                    io.to(memberSocketId).emit('recieve-channel-message', finalData)
+                }
+            })
+            const adminSocketId = userSocketMap.get(channel.admin._id.toString())
+            if(adminSocketId){
+                io.to(adminSocketId).emit('recieve-channel-message', finalData)
+            }
+        }
+    }
 
     const disconnect = (socket) =>{
         console.log(`client disconnect : ${socket.id}`);
@@ -57,6 +93,8 @@ const setupShocket = (server) => {
         socket.on("sendMessage" , sendMessage)
 
         socket.on("disconnect", ()=> disconnect(socket))
+
+        socket.on("send-channel-message", sendChannelMessage);
     })
 }
 

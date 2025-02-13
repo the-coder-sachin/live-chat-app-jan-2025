@@ -10,7 +10,7 @@ import { IoChevronBackCircle } from "react-icons/io5";
 
 const MessageContainer = () => {
 
-  const {selectedChatType, selectedChatData, selectedChatMessages, setSelectedChatMessages, setIsDownloading, setFileDownloadProgress} = useAppStore();
+  const {selectedChatType, selectedChatData, selectedChatMessages, setSelectedChatMessages, setIsDownloading, setFileDownloadProgress, userInfo} = useAppStore();
   const scrollRef = useRef();
   const [showImage, setShowImage] = useState(false);
   const [imageURL, setImageURL] = useState(null);
@@ -81,7 +81,7 @@ const MessageContainer = () => {
       return (
         <div key={index}>
           {showDate && <div className='text-center text-gray-400 my-2 border-y py-2'>{moment(message.timeStamp).format('LL')}</div>}
-          {selectedChatType === 'contact' && renderDmMessages(message) }
+          {selectedChatType === 'contact' ? renderDmMessages(message) : renderChannelMessages(message)}
         </div>
       )
     }
@@ -147,6 +147,28 @@ const MessageContainer = () => {
        </div>
      );
   }
+
+  const renderChannelMessages = (message) => {
+    return (
+      <div
+        className={`mt-5 ${
+          message.sender._id !== userInfo.id ? "text-left" : "text-right"
+        }`}
+      >
+        {message.messageType === "text" && (
+          <div
+            className={`${
+              message.sender._id === userInfo._id
+                ? "bg-[#c0029dd9] text-[#f9b7fe] border-[#ca73f3] rounded-full rounded-br-none "
+                : "bg-[#038bcf8e] text-[#bcfbff] border-[#ffffff]/20 rounded-full rounded-tl-none "
+            }border inline-block py-2 px-4 my-1 lg:max-w-[50%]  break-words`}
+          >
+            {message.content}
+          </div>
+        )}
+      </div>
+    );
+  };
 
 
 

@@ -23,8 +23,6 @@ const ContactContainer = () => {
     }
     const getChannels = async ()=>{
       const response = await apiClient.get(GET_USER_CHANNEL, {withCredentials: true});
-      console.log(response);
-      
       if(response.data && response.data.channels){
         setChannels(response.data.channels)
       }
@@ -58,7 +56,7 @@ const ContactContainer = () => {
         <NewDm />
       </div>
 
-      <div className="max-h-[38vh] overflow-y-auto scrollbar-none">
+      <div className="max-h-[160px] overflow-y-auto scrollbar-none">
         <ContactList contacts={directMessagesContacts} />
       </div>
 
@@ -68,7 +66,7 @@ const ContactContainer = () => {
         <CreateChannel />
       </div>
 
-      <div className="max-h-[38vh] overflow-y-auto scroll-m-1">
+      <div className="max-h-[160px] overflow-y-auto scrollbar-none">
         <ContactList contacts={channels} isChannel={true} />
       </div>
 
