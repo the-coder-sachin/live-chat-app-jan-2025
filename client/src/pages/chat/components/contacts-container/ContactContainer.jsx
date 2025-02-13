@@ -15,8 +15,6 @@ const ContactContainer = () => {
   useEffect(()=>{
     const getContacts = async ()=>{
       const response = await apiClient.get(GET_DM_LIST, {withCredentials: true});
-      console.log(response);
-      
       if(response.data && response.data.contact){
         setDirectMessagesContacts(response.data.contact)
       }
@@ -34,15 +32,11 @@ const ContactContainer = () => {
   useEffect(()=>{
     const getAllContacts = async ()=>{
       const response = await apiClient.get(GET_ALL_CONTACTS, {withCredentials: true});
-      console.log(response);
-      
       if(response.data && response.data.contact){
         setDirectMessagesContacts(response.data.contact)
       }
     }
     getAllContacts()
-    console.log(channels);
-    
   },[])
 
 

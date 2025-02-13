@@ -22,12 +22,7 @@ const ContactList = ({contacts, isChannel = false}) => {
     if(selectedChatData && selectedChatData._id !== contacts._id){
         setSelectedChatMessages([])
     }
-
   }
-  useEffect(() => {
-    console.log(channels);
-    console.log(contacts);
-  }, [])
   
   
   return (
