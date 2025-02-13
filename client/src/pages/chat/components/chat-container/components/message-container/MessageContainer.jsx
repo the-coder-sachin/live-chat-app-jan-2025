@@ -208,7 +208,11 @@ const MessageContainer = () => {
                 message.sender._id === userInfo.id
                   ? "bg-[#c0029dd9] text-[#f9b7fe] border-[#ca73f3] rounded-full rounded-br-none "
                   : "bg-[#038bcf8e] text-[#bcfbff] border-[#ffffff]/20 rounded-full rounded-tl-none "
-              }border inline-block py-2 px-4 lg:max-w-[50%]  break-words my-5`}
+              }border inline-block py-2 px-4 lg:max-w-[50%] max-w-[90%]  break-words my-5 ${
+                message.content.length > 55
+                  ? `py-4 px-6 rounded-2xl`
+                  : `py-2 px-4`
+              }`}
             >
               {message.content}
             </div>
