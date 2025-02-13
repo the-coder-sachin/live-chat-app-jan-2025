@@ -222,19 +222,19 @@ const MessageContainer = () => {
                 {message.sender._id !== userInfo.id && (
                   <>
                     <div className="flex items-center gap-2 ">
-                      <div className="avatar size-[30px] bg-white rounded-full flex justify-center items-center">
+                      <div className="avatar size-[28px] bg-white rounded-full flex justify-center items-center">
                         {message.sender.image ? (
                           <>
                             <img
                               src={`${host}profiles/${message.sender.image}`}
                               alt="profile"
-                              className={`rounded-full cursor-pointer border-2 size-7 flex justify-center items-center text-3xl font-bold `}
+                              className={`rounded-full cursor-pointer border-2 size-6 flex justify-center items-center text-3xl font-bold `}
                             />
                           </>
                         ) : (
                           <>
                             <p
-                              className={`rounded-full border-2 size-10 flex justify-center items-center text-lg font-bold ${
+                              className={`rounded-full border-2 size-6 flex justify-center items-center text-lg font-bold ${
                                 message.sender.color
                               } ${getColor(message.sender.color)} `}
                             >

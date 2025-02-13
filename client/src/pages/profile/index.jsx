@@ -83,7 +83,6 @@ const Profile = () => {
   const deleteImage = async ()=>{
     console.log(`trying to delete image 1122`);
     const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE, {withCredentials : true})
-    console.log(response.data);
      if (response.status === 200 && response.data.image) {
        setUserInfo({ ...userInfo, image: response.data.image });
        toast("profile picture removed successfully!");
@@ -102,8 +101,6 @@ const Profile = () => {
     if(userInfo.image){
       setProfileImage(`http://localhost:3000/profiles/${userInfo.image}`);
     }
-    console.log(userInfo);
-     
   }, [userInfo, setUserInfo, ])
   
 

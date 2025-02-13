@@ -48,7 +48,6 @@ const CreateChannel = () => {
         if(channelName.length>0 && selectedContact.length>0){
           const response = await apiClient.post(CREATE_CHANNEL, {name: channelName, members: selectedContact.map(contact=>contact.value)}, {withCredentials: true})
           if(response.status === 200){
-            console.log(response);
             setChannelName('');
             setSelectedContact([]);
             setNewChannelModel(false)
