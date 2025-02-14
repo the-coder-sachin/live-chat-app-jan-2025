@@ -106,11 +106,11 @@ const Profile = () => {
 
   return (
     <>
-      <main className="bg-red-100 h-[100vh] flex justify-center items-center ">
-        <div className="container bg-red-200 w-96 p-7 rounded-lg flex flex-col justify-between items-center gap-2 relative">
+      <main className="bg-slate-900 h-[100vh] flex justify-center items-center ">
+        <div className="container bg-slate-800 w-96 p-7 rounded-lg flex flex-col justify-between items-center gap-2 relative">
           <button
             onClick={() => navigate("/chat")}
-            className="absolute text-xl p-2 text-white bg-red-300 rounded-full hover:bg-red-400 top-2 left-2 shadow-md border border-t-rose-200"
+            className="absolute text-xl p-2 text-white bg-cyan-800 rounded-full hover:bg-cyan-900 top-2 left-2 shadow-md border border-cyan-900"
           >
             <IoIosArrowBack />
           </button>
@@ -124,7 +124,7 @@ const Profile = () => {
                   }
                 } else {
                   setProfileImage(null);
-                  deleteImage()
+                  deleteImage();
                 }
               }}
               onMouseMove={() => setHovered(true)}
@@ -173,7 +173,7 @@ const Profile = () => {
               {" "}
               hey!
               <span className="text-cyan-600 text-xs md:text-base ml-2 font-normal">
-                random@user.com
+                {userInfo.email} 👋
               </span>
             </p>
             <input
@@ -181,14 +181,14 @@ const Profile = () => {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="first name"
-              className="outline-none rounded-full bg-red-300 text-white placeholder:text-red-100 shadow-red-300 shadow-md p-2 border-rose-100 border text-xs md:text-base pl-4"
+              className="outline-none rounded-full bg-teal-700 text-yellow-400 placeholder:text-yellow-400  shadow-md p-2 border-teal-900 border text-xs md:text-base pl-4"
             />
             <input
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="last name"
-              className="outline-none rounded-full bg-red-300 text-white placeholder:text-red-100 shadow-red-300 shadow-md p-2 border-rose-100 border text-xs md:text-base pl-4"
+              className="outline-none rounded-full bg-teal-700 text-yellow-400 placeholder:text-yellow-400  shadow-md p-2 border-teal-900 border text-xs md:text-base pl-4"
             />
             <div className="flex gap-2 p-4 justify-center">
               {colors.map((color, index) => (
@@ -201,7 +201,7 @@ const Profile = () => {
             </div>
             <button
               onClick={saveChanges}
-              className="bg-rose-500 text-white font-semibold rounded-md py-2 hover:bg-rose-700 "
+              className="bg-yellow-500 text-white font-semibold rounded-md py-2 hover:bg-orange-500 "
             >
               save changes
             </button>
