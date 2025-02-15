@@ -19,4 +19,4 @@ channelSchema.pre('findOneAndUpdate', function(next){
     next()
 });
 
-export const channelModel = mongoose.model('channels', channelSchema)
+export const channelModel = mongoose.model.channels || mongoose.model('channels', channelSchema)
