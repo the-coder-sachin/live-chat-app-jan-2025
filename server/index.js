@@ -48,4 +48,9 @@ const server = app.listen(port, ()=>{
 
 setupShocket(server)
 
-mongoose.connect(databaseURL).then(()=>console.log('db connected')).catch((err)=>console.log(err.message))
+const connetcDB = async () => await mongoose.connect(databaseURL).then(()=>console.log('db connected')).catch((err)=>console.log(err.message))
+
+connetcDB()
+//J6fDtMCU7m3EPLF3
+
+//mongodb+srv://free-chat-app-2025:J6fDtMCU7m3EPLF3@free-chat-app-2025.811jc.mongodb.net/?
