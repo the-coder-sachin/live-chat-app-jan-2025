@@ -3,15 +3,25 @@ import { messageModel } from "./models/MessageModel.js";
 import { channelModel } from "./models/ChannelModel.js";
 
 const setupShocket = (server) => {
-    const io = new Server(server,
-        {
-            cors:{
-                origin: process.env.ORIGIN,
-                methods: ['get', 'post'],
-                credentials: true
-            }
-        }
-    )
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://live-chat-app-jan-2025-1.onrender.com",
+    ];
+    
+     const io = new Server(server, {
+       cors: {
+         origin: function (origin, callback) {
+           if (!origin || allowedOrigins.includes(origin)) {
+             callback(null, true);
+           } else {
+             callback(new Error("Not allowed by CORS (Socket.IO)"));
+           }
+         },
+         methods: ["GET", "POST"],
+         credentials: true,
+       },
+     });
+
 
     const userSocketMap = new Map()
 

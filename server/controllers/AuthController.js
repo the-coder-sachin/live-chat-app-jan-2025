@@ -111,6 +111,8 @@ export const login = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
+    console.log('check');
+    
     const id = req.userId;
     const user = await userModel.findById(id);
     if (!user) {

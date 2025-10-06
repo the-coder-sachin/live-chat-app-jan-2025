@@ -2,23 +2,23 @@ import { Router } from "express";
 import { verifyToken } from "../middlewares/AuthMiddleware.js";
 import { getMessages, uploadFile } from "../controllers/MessageController.js";
 import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
 
 export const messageRoutes = Router();
 
 
 
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/temp"); // Path where files are temporarily stored
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "chat_files", // Cloudinary में folder का नाम
+    resource_type: "auto", // pdf, images, videos सब support
   },
 });
 
-const upload = multer({ dest: 'uploads/files' });
+const upload = multer({ storage: storage });
 
 
 

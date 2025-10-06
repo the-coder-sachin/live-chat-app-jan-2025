@@ -77,28 +77,20 @@ const MessageContainer = () => {
     return imgRegex.test(filePath);
   };
 
-  const handleDownload = async (url) => {
-    setIsDownloading(true);
-    setFileDownloadProgress(0);
-    const response = await apiClient.get(`${host}${url}`, {
-      responseType: Blob,
-      onDownloadProgres: (ProgressEvent) => {
-        const { loaded, total } = ProgressEvent;
-        const progress = Math.round((loaded / total) * 100);
-        setFileDownloadProgress(progress);
-      },
-    });
-    const urlBlob = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement("a");
-    link.href = urlBlob;
-    link.setAttribute("download", url.split("/").pop());
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    window.URL.revokeObjectURL(urlBlob);
-    setIsDownloading(false);
-    setFileDownloadProgress(0);
-  };
+ const handleDownload = (url) => {
+   setIsDownloading(true);
+
+   const link = document.createElement("a");
+   link.href = url; // Cloudinary public URL
+   link.setAttribute("download", url.split("/").pop()); // Optional: download as filename
+   document.body.appendChild(link);
+   link.click();
+   link.remove();
+
+   setIsDownloading(false);
+   setFileDownloadProgress(0);
+ };
+
 
   const renderMessages = () => {
     let lastDate = null;
@@ -158,7 +150,7 @@ const MessageContainer = () => {
                 className="cursor-pointer"
               >
                 <img
-                  src={`${host}${message.fileUrl}`}
+                  src={`${message.fileUrl}`}
                   alt="image"
                   className="size-52 object-cover rounded-xl"
                 />
@@ -276,7 +268,7 @@ const MessageContainer = () => {
                 className="cursor-pointer"
               >
                 <img
-                  src={`${host}${message.fileUrl}`}
+                  src={`${message.fileUrl}`}
                   alt="image"
                   className="size-52 object-cover rounded-xl"
                 />
@@ -319,7 +311,7 @@ const MessageContainer = () => {
           </div>
           <div>
             <img
-              src={`${host}${imageURL}`}
+              src={`${imageURL}`}
               alt="image"
               className="w-fit h-fit max-w-[90vw] max-h-[90vh] object-cover rounded-md"
             />
