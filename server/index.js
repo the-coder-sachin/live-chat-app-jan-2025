@@ -17,21 +17,17 @@ dotenv.config()
 
 const app = express() 
 const port = process.env.PORT || 4000
-const databaseURL = process.DATABASE_URL
+const databaseURL = process.env.DATABASE_URL
 
 
 app.use(
   cors({
-    origin: process.env.ORIGIN,
+    origin: process.env.ORIGIN, 
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   })
 );
 
-// app.use(//     origin:[process.env.ORIGIN],
-//     methods:["GET","POST","PUT","PATCH","DELETE"],
-//     credentials: true,
-// }));
-app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -57,15 +53,23 @@ app.get('/', (req,res)=>{
     res.send('hello sachin') 
 })
 
+const connectDB = async () => {
+  try {
+    await mongoose.connect(databaseURL);
+    console.log("DB connected");
+  } catch (err) {
+    console.error("DB connection error:", err.message);
+    process.exit(1);
+  }
+};
+
+connectDB()
 const server = app.listen(port, ()=>{
     console.log(`server running... at port ${port}`)
 })
 
 setupShocket(server)
 
-const connectDB = async () => await mongoose.connect(databaseURL).then(()=>console.log('db connected')).catch((err)=>console.log(err.message))
-
-connectDB()
 
 
 
