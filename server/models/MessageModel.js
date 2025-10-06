@@ -14,19 +14,15 @@ const messageSchema = new mongoose.Schema({
   messageType: {
     type: String,
     enum: ['text', 'file'],
-    required: true,
+    
   },
   content:{
     type: String,
-    required: function(){
-        return this.messageType === 'text'
-    }
+  
   },
   fileUrl:{
     type: String,
-    required : function(){
-        return this.messageType === 'file'
-    }
+    
   },
   timeStamp :{
     type: Date,
