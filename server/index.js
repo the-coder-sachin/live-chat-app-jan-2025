@@ -20,6 +20,7 @@ const port = process.env.PORT || 4000
 const databaseURL = process.env.DATABASE_URL
 
 
+<<<<<<< HEAD
 const allowedOrigins = [
   "http://localhost:5173",
   "https://live-chat-app-jan-2025-1.onrender.com",
@@ -38,6 +39,14 @@ app.use(
   })
 );
 
+=======
+// app.use(cors({
+//     origin:[process.env.ORIGIN],
+//     methods:["GET","POST","PUT","PATCH","DELETE"],
+//     credentials: true,
+// }));
+app.use(cors());
+>>>>>>> 895c9cc88f349f2aa842280a4f9bc74643287901
 
 // Middleware to parse URL-encoded data
 app.use(express.urlencoded({ extended: true }));
@@ -71,7 +80,11 @@ const server = app.listen(port, ()=>{
 
 setupShocket(server)
 
+<<<<<<< HEAD
 const connectDB = async () => await mongoose.connect(databaseURL).then(()=>console.log('db connected')).catch((err)=>console.log(err.message))
 
 connectDB()
 
+=======
+mongoose.connect(databaseURL).then(()=>console.log('db connected')).catch((err)=>console.log(err.message))
+>>>>>>> 895c9cc88f349f2aa842280a4f9bc74643287901
