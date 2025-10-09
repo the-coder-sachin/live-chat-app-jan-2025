@@ -73,7 +73,7 @@ const App = () => {
     <BrowserRouter>
     <Routes>
       <Route path='*' element={<NotFound/>}/>
-      <Route path='/auth' element={<AuthRoute>
+      <Route path='/' element={<AuthRoute>
         <Auth/>
         </AuthRoute>
         }/>
