@@ -4,7 +4,7 @@ import { animationDefaultOptions } from '../../../../lib/utils'
 
 const EmptyChatContainer = () => {
   return (
-    <div className="flex-1 md:bg-[#1c1d25] md:flex flex-col justify-center items-center hidden duration-1000 transition-all  ">
+    <div className="flex-1 md:bg-gradient-to-t from-black from-5% via-black via-85% to-emerald-950 to-200% md:flex flex-col justify-center items-center hidden duration-1000 transition-all  ">
       <div className="animate-pulse ">
         <Lottie
           isClickToPauseDisabled={true}
@@ -13,12 +13,11 @@ const EmptyChatContainer = () => {
           options={animationDefaultOptions}
         />
       </div>
-      <h3 className="text-fuchsia-300 text-xl ">
-        <span className="text-purple-400">hi! </span>
-        welcome to....
-        <span className="text-yellow-400 block text-4xl ">
-          {" "}
-          FREE CHAT APP
+      <h3 className="golden text-xl mt-6 ">
+        {/* <span className="">Hi! </span>
+        Welcome to.... */}
+        <span className="golden block text-2xl ">
+          <span className='text-3xl font-bold'>REAL-TIME </span> FREE CHAT APP
         </span>
       </h3>
     </div>

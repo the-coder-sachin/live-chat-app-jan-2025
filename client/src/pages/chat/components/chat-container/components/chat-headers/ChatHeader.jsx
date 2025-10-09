@@ -10,7 +10,7 @@ const ChatHeader = () => {
  
 
   return (
-    <div className="h-[10vh] border-b-2 border-[#2f303b] flex items-center justify-between p-6 py-9">
+    <div className="h-[10vh] border-b-2 border-[#2f303b] flex items-center justify-between p-6 py-9 bg-black">
       <div className="flex gap-5 items-center justify-between w-full">
         <div className="flex justify-between items-center w-full gap-5">
           <div className="flex gap-5 items-center">

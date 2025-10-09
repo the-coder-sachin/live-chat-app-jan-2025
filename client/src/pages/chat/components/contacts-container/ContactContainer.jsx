@@ -41,7 +41,7 @@ const ContactContainer = () => {
 
 
   return (
-    <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[25vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-[100vw] select-none">
+    <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[25vw] bg-gradient-to-t from-black from-5% via-black via-85% to-emerald-950 to-200% border-r-2 border-[#2f303b] w-[100vw] select-none">
       <Logo />
 
       <div className="my-5"></div>
@@ -76,9 +76,9 @@ const ContactContainer = () => {
 const Logo = ()=>{
   return (
     <div className="flex justify-center items-center p-4 text-nowrap relative">
-      <img src={appLogo} alt="" className="size-14 object-cover shrink" />
-      <h1 data-heading="FREE CHAT" className="golden text-3xl flex-shrink">
-        free chat
+      {/* <img src={appLogo} alt="" className="size-14 object-cover shrink" /> */}
+      <h1 data-heading="FREE CHAT" className="golden text-2xl flex-shrink uppercase">
+        Real Time Chat
       </h1>
     </div>
   );

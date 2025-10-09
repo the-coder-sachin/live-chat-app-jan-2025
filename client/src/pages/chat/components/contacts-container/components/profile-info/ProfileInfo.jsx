@@ -37,7 +37,7 @@ const ProfileInfo = () => {
   
 
   return (
-    <div className="absolute bottom-0 flex h-16 items-center justify-between px-10 w-full bg-[#2a2b33] ">
+    <div className="absolute bottom-0 py-4 pb-10 md:py-8 flex items-center justify-between px-4 w-full bg-[#000000] ">
       <div className="flex gap-3 items-center justify-center">
         <div className="img border-white rounded-full w-fit hover:scale-110 transition-all ease-in-out cursor-pointer relative">
           {userInfo.image ? (
@@ -60,10 +60,17 @@ const ProfileInfo = () => {
             </>
           )}
         </div>
-        <div>
+        <div className="text-sm italic capitalize">
+          <p>
           {userInfo.firstname && userInfo.lastname
-            ? `${userInfo.firstname} ${userInfo.lastname}`
+            ? `${userInfo.firstname}`
             : ``}
+          </p>
+          <p className="ml-3">
+          {userInfo.firstname && userInfo.lastname
+            ? `${userInfo.lastname}`
+            : ``}
+          </p>
         </div>
       </div>
       <div className="flex gap-5">

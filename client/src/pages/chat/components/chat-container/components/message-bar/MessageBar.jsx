@@ -23,6 +23,7 @@ const MessageBar = () => {
     }
 
     const handleSendMessage = async ()=>{
+      if(message==="" || message.trim() === "") return;
       if(selectedChatType === 'contact'){
         socket.emit("sendMessage" , {
           sender: userInfo.id,
@@ -46,9 +47,7 @@ const MessageBar = () => {
 
     const handleFileInputClick = ()=>{
       if(fileInputRef.current){
-        fileInputRef.current.click()
-        console.log('click running');
-        
+        fileInputRef.current.click()  
       }
     }
 
@@ -90,8 +89,8 @@ const MessageBar = () => {
 
 
   return (
-    <div className="h-[10vh] bg-[#1c1d25] flex justify-center items-center p-8 mb-5 gap-6">
-      <div className="flex flex-1 bg-[#2a2b33] rounded-full gap-5 items-center pr-5">
+    <div className="h-[10vh] bg-[#1c1d25] flex justify-center items-center p-">
+      <div className="flex flex-1 bg-[#0d0d0d] gap-5 items-center pr-5">
         <input
           type="text"
           className="flex-1 p-5 bg-transparent rounded-md focus:border-none focus:outline-none"
@@ -130,7 +129,7 @@ const MessageBar = () => {
       </div>
       <button
         onClick={handleSendMessage}
-        className="focus:border-none focus:outline-none focus:text-white duration-100 transition-all bg-[#c0029dd9] text-[#f9b7fe] items-center justify-center p-5 hover:bg-[#c0029d] hover:text-white rounded-full"
+        className="focus:border-none focus:outline-none focus:text-white duration-100 transition-all bg-[#c0029dd9] text-[#f9b7fe] items-center justify-center p-[22px] hover:bg-[#c0029d] hover:text-white "
       >
         <AiOutlineSend className="text-xl" />
       </button>

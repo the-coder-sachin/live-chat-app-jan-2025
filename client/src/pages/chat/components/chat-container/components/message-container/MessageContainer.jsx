@@ -117,7 +117,9 @@ const MessageContainer = () => {
     return (
       <div
         className={`${
-          message.sender === selectedChatData._id ? "text-left" : "text-right"
+          message.sender === selectedChatData._id
+            ? "flex flex-col items-start"
+            : "flex flex-col items-end"
         }`}
       >
         {message.messageType === "text" && (
@@ -127,7 +129,7 @@ const MessageContainer = () => {
                 ? "bg-[#c0029dd9] text-[#f9b7fe] border-[#ca73f3] rounded-full rounded-br-none "
                 : "bg-[#038bcf8e] text-[#bcfbff] border-[#ffffff]/20 rounded-full rounded-tl-none "
             }border inline-block max-w-[90%] my-1 lg:max-w-[50%]  break-words ${
-              message.content.length > 55 ? `py-4 px-6 rounded-2xl` : `py-2 px-4`
+              message.content.length > 55 ? `py-4 px-6 rounded-xl` : `py-2 px-4`
             }`}
           >
             {message.content}
@@ -184,7 +186,7 @@ const MessageContainer = () => {
     return (
       <div
         className={`mt-5 ${
-          message.sender._id !== userInfo.id ? "text-left" : "text-right"
+          message.sender._id !== userInfo.id ? "flex flex-col items-start" : "flex flex-col items-end"
         }`}
       >
         {message.messageType === "text" && (
@@ -202,7 +204,7 @@ const MessageContainer = () => {
                   : "bg-[#038bcf8e] text-[#bcfbff] border-[#ffffff]/20 rounded-full rounded-tl-none "
               }border inline-block py-2 px-4 lg:max-w-[50%] max-w-[90%]  break-words my-5 ${
                 message.content.length > 55
-                  ? `py-4 px-6 rounded-2xl`
+                  ? `py-4 px-6 rounded-xl`
                   : `py-2 px-4`
               }`}
             >
@@ -296,7 +298,7 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto scrollbar-none p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full">
+    <div className="flex-1 overflow-y-auto scrollbar-none p-4 px-8 md:w-[65vw] lg:w-[70vw] xl:w-[80vw] w-full bg-gradient-to-b from-black from-5% via-black via-85% to-pink-950 to-200%">
       {renderMessages()}
       <div ref={scrollRef} />
       {showImage && (

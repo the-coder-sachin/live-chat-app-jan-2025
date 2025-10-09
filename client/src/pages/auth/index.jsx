@@ -145,7 +145,7 @@ const Auth = () => {
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
-      <div className="shadow-2xl h-full w-full  flex justify-center items-center">
+      <div className="shadow-2xl h-full w-full flex justify-center items-center">
         <div className="flex flex-col md:flex-row md:gap-9 gap-2 ">
           <div>
             <div>
@@ -159,7 +159,7 @@ const Auth = () => {
             </div>
 
             <Tabs defaultValue="login" className="w-full justify-center mt-4">
-              <TabsList className="flex ">
+              <TabsList className="flex">
                 <TabsTrigger
                   onClick={() => {
                     setLoginState("login");
@@ -179,7 +179,7 @@ const Auth = () => {
                   Sign Up
                 </TabsTrigger>
               </TabsList>
-              <TabsContent value="login" className="flex flex-col gap-2 ">
+              <TabsContent value="login" className="flex flex-col gap-2">
                 <Input
                   className="mt-2 rounded-full outline-none text-xs placeholder:text-neutral-400 active:outline-none"
                   type="email"
@@ -231,7 +231,7 @@ const Auth = () => {
               </TabsContent>
             </Tabs>
           </div>
-          <img src={Background} alt="" className="h-[60vh] hidden md:block" />
+          <img src={Background} alt="" className="h-[60vh] hidden lg:block" />
         </div>
       </div>
     </div>
