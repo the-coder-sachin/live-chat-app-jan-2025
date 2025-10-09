@@ -12,7 +12,7 @@ import NotFound from './components/ui/NotFound'
 const PrivateRoute = ({children})=>{
   const {userInfo} = useAppStore();
   const isAuthenticated = !!userInfo;
-  return isAuthenticated ? children : <Navigate to='/auth'/>
+  return isAuthenticated ? children : <Navigate to='/'/>
 }
 const ChatRoute = ({children})=>{
   const {userInfo} = useAppStore();  
