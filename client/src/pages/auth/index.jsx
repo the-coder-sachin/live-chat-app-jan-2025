@@ -12,6 +12,7 @@ import { useAppStore } from '../../store';
 
 const Auth = () => {
   const { setUserInfo } = useAppStore();
+  const [loading, setLoading] = useState(false)
 
   const [loginState, setLoginState] = useState("login");
   const [email, setEmail] = useState("");
@@ -55,6 +56,7 @@ const Auth = () => {
   const handleSignup = async () => {
     if (validator(true)) {
       try {
+        setLoading(true)
         const response = await apiClient.post(
           SIGNUP_ROUTE,
           {
@@ -70,6 +72,8 @@ const Auth = () => {
         }
       } catch (error) {
         toast.error(error.message);
+      } finally{
+        setLoading(false)
       }
     }
   };
@@ -77,6 +81,7 @@ const Auth = () => {
   const handleLogin = async () => {
     if (validator(false)) {
       try {
+        setLoading(true)
         const response = await apiClient.post(
           LOGIN_ROUTE,
           {
@@ -98,6 +103,8 @@ const Auth = () => {
         }
       } catch (error) {
         toast.error(error.message);
+      } finally{
+        setLoading(false)
       }
     }
   };
@@ -123,7 +130,18 @@ const Auth = () => {
     };
   }, [email, password, confirmPassword, loginState]); // Add dependencies here to keep the event listener in sync with state
 
-  
+   if (loading) {
+     return (
+       <>
+         <div className="flex justify-center items-center min-h-screen bg-gray-200">
+           <div className="relative">
+             <div className="w-24 h-24 border-8 border-t-transparent border-green-500 rounded-full animate-spin"></div>
+             <div className="absolute w-4 h-4 bg-green-500 rounded-full top-0 left-0 animate-ping"></div>
+           </div>
+         </div>
+       </>
+     );
+   }
 
   return (
     <div className="h-screen w-screen flex justify-center items-center">
