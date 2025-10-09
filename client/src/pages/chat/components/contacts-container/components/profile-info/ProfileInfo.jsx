@@ -25,7 +25,7 @@ const ProfileInfo = () => {
       if(response.data.success){
         toast(response.data.message);
         setUserInfo(null)
-        navigate('/auth')
+        navigate('/')
       }else{
         toast('something went wrong')
       }
@@ -43,7 +43,7 @@ const ProfileInfo = () => {
           {userInfo.image ? (
             <>
               <img
-                src={`${host}profiles/${userInfo.image}`}
+                src={`${host}/profiles/${userInfo.image}`}
                 alt="profile"
                 className={`rounded-full border-2 size-10 flex justify-center items-center text-3xl font-bold `}
               />
