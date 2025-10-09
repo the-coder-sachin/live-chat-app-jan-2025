@@ -6,16 +6,12 @@ const setupShocket = (server) => {
    
     
      const io = new Server(server, {
+       
        cors: {
-         origin: "*",
+         origin: process.env.ORIGIN,
          methods: ["GET", "POST"],
          credentials: true,
        },
-    //    cors: {
-    //      origin: process.env.ORIGIN,
-    //      methods: ["GET", "POST"],
-    //      credentials: true,
-    //    },
      });
 
 
