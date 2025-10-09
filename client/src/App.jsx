@@ -7,6 +7,7 @@ import { useAppStore } from './store'
 import { toast } from 'sonner'
 import { apiClient } from './lib/api-client'
 import { USER_INFO_ROUTE } from '../utils/constants'
+import NotFound from './components/ui/NotFound'
 
 const PrivateRoute = ({children})=>{
   const {userInfo} = useAppStore();
@@ -15,7 +16,7 @@ const PrivateRoute = ({children})=>{
 }
 const ChatRoute = ({children})=>{
   const {userInfo} = useAppStore();  
-  return userInfo.profileSetup ? children : <Navigate to='/profile'/>
+  return userInfo && userInfo.profileSetup ? children : <Navigate to='/profile'/>
 }
 
 const AuthRoute = ({children})=>{
@@ -52,7 +53,7 @@ const App = () => {
       getUser()
     }
     
-  }, [userInfo, setUserInfo])
+  }, [])
 
     
   if(loading){
@@ -71,7 +72,7 @@ const App = () => {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path='*' element={<Navigate to={'/auth'}/>}/>
+      <Route path='*' element={<NotFound/>}/>
       <Route path='/auth' element={<AuthRoute>
         <Auth/>
         </AuthRoute>
