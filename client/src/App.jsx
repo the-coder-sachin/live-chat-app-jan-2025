@@ -16,7 +16,7 @@ const PrivateRoute = ({children})=>{
 }
 const ChatRoute = ({children})=>{
   const {userInfo} = useAppStore();  
-  return userInfo && userInfo.profileSetup ? children : <Navigate to='/profile'/>
+  return userInfo?.profileSetup ? children : <Navigate to='/profile'/>
 }
 
 const AuthRoute = ({children})=>{
@@ -31,6 +31,7 @@ const App = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    
     const getUser = async ()=>{
       try {
         const response = await apiClient.get(USER_INFO_ROUTE, {withCredentials:true});
@@ -39,8 +40,8 @@ const App = () => {
         }
         
       } catch (error) {
-        console.log(error.message);
-        toast.error(error.response.data)
+        console.log(error.message || "Something went wrong");
+        toast.error(error.response.data || "Error fetching user information")
       }
       finally{
         setLoading(false)
@@ -53,7 +54,7 @@ const App = () => {
       getUser()
     }
     
-  }, [])
+  }, [userInfo])
 
     
   if(loading){
@@ -72,7 +73,6 @@ const App = () => {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path='*' element={<NotFound/>}/>
       <Route path='/' element={<AuthRoute>
         <Auth/>
         </AuthRoute>
@@ -89,6 +89,7 @@ const App = () => {
           <Profile/>
         </PrivateRoute>
         }/>
+        <Route path='*' element={<NotFound/>}/>
     </Routes>
     </BrowserRouter>
   )
